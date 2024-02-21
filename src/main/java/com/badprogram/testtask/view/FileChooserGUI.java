@@ -5,8 +5,6 @@ import com.badprogram.testtask.FileProcessor;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -27,24 +25,21 @@ public class FileChooserGUI extends JFrame {
         chooseButton = new JButton("Choose File");
         resultTextArea = new JTextArea();
 
-        chooseButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setDialogTitle("Choose a .txt file");
-                fileChooser.setFileFilter(new FileNameExtensionFilter("Text files (*.txt)", "txt"));
+        chooseButton.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Choose a .txt file");
+            fileChooser.setFileFilter(new FileNameExtensionFilter("Text files (*.txt)", "txt"));
 
-                int result = fileChooser.showOpenDialog(FileChooserGUI.this);
+            int result = fileChooser.showOpenDialog(FileChooserGUI.this);
 
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = fileChooser.getSelectedFile();
-                    try {
-                        new FileProcessor(FileChooserGUI.this).processFile(selectedFile);
-                    } catch (IOException exception) {
-                        resultTextArea.setText("Something went wrong during file reading: " + exception.getMessage());
-                    } catch (RuntimeException exception) {
-                        resultTextArea.setText("Something went wrong during data processing: " + exception.getMessage());
-                    }
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                try {
+                    new FileProcessor(FileChooserGUI.this).processFile(selectedFile);
+                } catch (IOException exception) {
+                    resultTextArea.setText("Something went wrong during file reading: " + exception.getMessage());
+                } catch (RuntimeException exception) {
+                    resultTextArea.setText("Something went wrong during data processing: " + exception.getMessage());
                 }
             }
         });
