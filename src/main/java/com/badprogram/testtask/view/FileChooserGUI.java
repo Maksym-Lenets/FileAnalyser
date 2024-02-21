@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.IOException;
 
 public class FileChooserGUI extends JFrame {
-    private JButton chooseButton;
     private JTextArea resultTextArea;
 
     public FileChooserGUI() {
@@ -22,7 +21,7 @@ public class FileChooserGUI extends JFrame {
     }
 
     private void initComponents() {
-        chooseButton = new JButton("Choose File");
+        JButton chooseButton = new JButton("Choose File");
         resultTextArea = new JTextArea();
 
         chooseButton.addActionListener(e -> {
@@ -35,7 +34,9 @@ public class FileChooserGUI extends JFrame {
             if (result == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile();
                 try {
-                    new FileProcessor(FileChooserGUI.this).processFile(selectedFile);
+                    var fileProcessor = new FileProcessor();
+                    var resultReport = fileProcessor.processFile(selectedFile);
+                    resultTextArea.setText(resultReport);
                 } catch (IOException exception) {
                     resultTextArea.setText("Something went wrong during file reading: " + exception.getMessage());
                 } catch (RuntimeException exception) {
@@ -50,7 +51,4 @@ public class FileChooserGUI extends JFrame {
         add(new JScrollPane(resultTextArea), BorderLayout.CENTER);
     }
 
-    public JTextArea getResultTextArea() {
-        return resultTextArea;
-    }
 }

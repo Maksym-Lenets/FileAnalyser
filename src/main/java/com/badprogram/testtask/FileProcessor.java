@@ -3,7 +3,6 @@ package com.badprogram.testtask;
 import com.badprogram.testtask.util.CalculationUtils;
 import com.badprogram.testtask.util.IOUtils;
 import com.badprogram.testtask.util.LogicProcessUtils;
-import com.badprogram.testtask.view.FileChooserGUI;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,13 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 public class FileProcessor {
-    private final FileChooserGUI fileChooserGUI;
 
-    public FileProcessor(FileChooserGUI fileChooserGUI) {
-        this.fileChooserGUI = fileChooserGUI;
-    }
-
-    public void processFile(File file) throws IOException {
+    public String processFile(File file) throws IOException {
         long startTime = System.nanoTime();
         var finalReportData = new LinkedHashMap<String, Object>();
 
@@ -47,7 +41,7 @@ public class FileProcessor {
         long spentTimeMs = (endTime - startTime) / 1_000_000;
         finalReportData.put("Time spent on file processing (milliseconds)", spentTimeMs);
 
-        fileChooserGUI.getResultTextArea().setText(createFinalReport(finalReportData));
+        return createFinalReport(finalReportData);
     }
 
     private String createFinalReport(Map<String, Object> results) {
